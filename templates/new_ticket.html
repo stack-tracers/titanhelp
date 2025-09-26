@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}TitanHelp - New Ticket{% endblock %}
+
+{% block content %}
+<h1>New Ticket</h1>
+<form method="POST">
+    <label>Name: <input type="text" name="name" maxlength="100" required></label><br><br>
+    <label>Description:<br>
+        <textarea name="description" maxlength="1000" rows="5" cols="40" required></textarea>
+    </label><br><br>
+    <label>Priority:
+        <select name="priority">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+        </select>
+    </label><br><br>
+    <button type="submit" class="button">Submit</button>
+    <a href="{{ url_for('index') }}" class="button">Cancel</a>
+</form>
+{% endblock %}
