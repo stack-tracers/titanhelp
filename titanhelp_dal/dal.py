@@ -209,11 +209,3 @@ class TitanHelpDAL:
             created_at=row["created_at"],
         )
 
-
-if __name__ == "__main__":
-    dal = TitanHelpDAL("titanhelp.db")
-    t = dal.create_ticket("Example", "My printer is on fire", priority="High")
-    print("Created:", t)
-    print("List:", dal.list_tickets())
-    t = dal.set_status(t.id, "In Progress")
-    print("Updated:", t)
