@@ -32,6 +32,10 @@ def new_ticket():
 
         if not name or not description:
             abort(400, "Name and description are required.")
+        if len(name) > 100:
+            abort(400, "Length of name must be 100 words or under.")
+        if len(description) > 1000:
+            abort(400, "Length of description must be 100 words or under.")
 
         dal.create_ticket(name, description, priority=priority)
         return redirect(url_for("index"))
