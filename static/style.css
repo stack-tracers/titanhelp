@@ -42,3 +42,7 @@ form {
 .date, .action {
     white-space: nowrap;
 }
+.description {
+    width: 60%;
+    overflow-wrap: anywhere;
+}
