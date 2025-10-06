@@ -23,3 +23,22 @@ header img {
 .button:hover {
     background-color: #0d3656;
 }
+
+table, th, td {
+  border: 1pt solid black;
+  border-collapse: collapse;
+  padding: 7pt;
+}
+table {
+    width: 100%;
+    margin-top: 5pt;
+}
+td {
+    overflow-wrap: anywhere;
+}
+form {
+    display: inline;
+}
+.date, .action {
+    white-space: nowrap;
+}
