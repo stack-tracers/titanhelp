@@ -20,5 +20,10 @@ venv/bin/pip install -r requirements.txt
 
 Run the app:
 ```
-venv/bin/python3 app.y
+venv/bin/python3 app.py
+```
+
+Test the app:
+```
+venv/bin/python3 -m unittest -v
 ```
