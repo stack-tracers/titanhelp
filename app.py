@@ -9,8 +9,11 @@ dal = TitanHelpDAL("titanhelp.db")
 # homepage
 @app.route("/")
 def index():
-    # fetch all tickets from DAL
-    tickets = dal.list_tickets()
+    try:
+        # fetch all tickets from DAL
+        tickets = dal.list_tickets()
+    except Exception as e:
+        return render_template("index.html", code=500, error=f"Database Connection Failed: {e}")
     return render_template("index.html", tickets=tickets)
 
 # view ticket
@@ -20,13 +23,10 @@ def view_ticket(ticket_id):
     try:
         ticket = dal.get_ticket(ticket_id)
     except Exception as e:
-        code = 500
-        error = f"Unexpected Error\n{e}"
-        abort(code, error)
+        return render_template("index.html", code=500, error=f"Unexpected Error: {e}")
+
     if not ticket:
-        code = 404
-        error = "Ticket not found."
-        abort(code, error)
+        return render_template("index.html", code=404, error="Ticket not found.")
     return render_template("view_ticket.html", ticket=ticket)
 
 # new ticket page
@@ -38,33 +38,20 @@ def new_ticket():
         priority = (request.form.get("priority") or "Low").strip()
 
         if not name or not description:
-            code = 400
-            error = "Name and description are required."
-            abort(code, error)
-
+            return render_template("new_ticket.html", code=400, error="Name and description are required.")
         if not priority:
-            code = 400
-            error = "Priority is required."
-            abort(code, error)
+            return render_template("new_ticket.html", code=400, error="Priority Level is required.")
         if len(name) > 100:
-            code = 400
-            error = "Length of name must be 100 words or under."
-            abort(code, error)
+            return render_template("new_ticket.html", code=400, error="Length of name must be 100 words or under.")
         if len(description) > 1000:
-            code = 400
-            error = "Length of description must be 100 words or under."
-            abort(code, error)
+            return render_template("new_ticket.html", code=400, error="Length of description must be 100 words or under.")
 
         try: 
             dal.create_ticket(name, description, priority=priority)
         except ValueError as e:
-            code = 400,
-            error = f"ValueError\n{e}"
-            abort(code, error)
+            return render_template("new_ticket.html", code=400, error=f"ValueError: {e}")
         except Exception as e:
-            code = 500
-            error = f"Unexpected Error\n{e}"
-            abort(code, error)
+            return render_template("new_ticket.html", code=500, error=f"Unexpected Error: {e}")
 
         return redirect(url_for("index"))
 
@@ -76,33 +63,22 @@ def close_ticket(ticket_id):
     try: 
         ticket = dal.get_ticket(ticket_id)
     except ValueError as e:
-        code = 400
-        error = f"ValueError\n{e}"
-        abort(code, error)
+         return render_template("view_ticket.html", ticket=ticket, code=400, error=f"ValueError: {e}")
     except Exception as e:
-        code = 500
-        error= f"Unexpected Error\n{e}"
-        abort(code, error)
+        return render_template("view_ticket.html", ticket=ticket, code=500, error=f"Unexpected Error: {e}")
 
     if not ticket:
-        code = 404
-        error = "Ticket not found."
-        abort(code, error)
+        return render_template("index.html", code=404, error="Ticket not found.")
+
     if ticket.status == "Closed":
-        code = 400
-        error = "Ticket has already been closed."
-        abort(code, error)
+        return render_template("index.html", code=400, error="Ticket has already been closed.")
 
     try:
         dal.set_status(ticket_id, "Closed")
     except ValueError as e:
-        code = 400
-        error = f"ValueError\n{e}"
-        abort(code, error)
+        return render_template("index.html", code=400, error=f"ValueError: {e}")
     except Exception as e:
-        code = 500
-        error = f"Unexpected Error\n{e}"
-        abort(code, error)
+        return render_template("index.html", code=500, error=f"Unexpected Error: {e}")
 
     return redirect(url_for("index")) # back to homepage after close --shaun
     # hi shaun
