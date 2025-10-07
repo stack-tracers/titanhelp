@@ -73,15 +73,15 @@ class TestTickets(unittest.TestCase):
             self.assertEqual(response.status_code, 201)
             self.assertIn(">Successfully Created Ticket</div>", response.get_data(as_text=True))
     
-    # TODO Fix Fail After Second Run
     def test_closing_tickets(self):
         with app.test_client() as c:
-            dal.update_ticket(1, status="Open")
             response = c.post("/new-ticket", data={"name":"Closed Ticket", "description":"This is a closed ticket","priority":'High'}) # the priority must have apostrophes to match the db
             self.assertEqual(response.status_code, 201)
-            response = c.post("/ticket/1/close")
-            self.assertEqual(response.status_code, 200)
-            self.assertIn(">Ticket has been successfully closed</div>", response.get_data(as_text=True))
+            for t in dal.list_tickets():
+                if t.name == "Closed Ticket" and t.status == "Open":
+                    response = c.post(f"/ticket/{t.id}/close")
+                    self.assertEqual(response.status_code, 200)
+                    self.assertIn(">Ticket has been successfully closed</div>", response.get_data(as_text=True))
 
 if __name__ == '__main__':
     unittest.main()
