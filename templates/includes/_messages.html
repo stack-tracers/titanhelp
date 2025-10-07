@@ -1,9 +1,5 @@
 {% if error %}
-    <div class="alert alert-danger">
-        {% if code %}
-        {{code}} 
-        {% endif %}
-        {{error}}</div>
+    <div class="alert alert-danger">{{code}} {{error}}</div>
 {% endif %}
 {% if msg %}
     <div class="alert alert-success">{{msg}}</div>

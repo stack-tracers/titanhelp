@@ -13,7 +13,7 @@ def index():
         # fetch all tickets from DAL
         tickets = dal.list_tickets()
     except Exception as e:
-        return render_template("index.html", code=500, error=f"Database Connection Failed: {e}")
+        return render_template("error.html", code=500, error=f"Database Connection Failed: {e}")
     return render_template("index.html", tickets=tickets)
 
 # view ticket
@@ -23,10 +23,10 @@ def view_ticket(ticket_id):
     try:
         ticket = dal.get_ticket(ticket_id)
     except Exception as e:
-        return render_template("index.html", code=500, error=f"Unexpected Error: {e}")
+        return render_template("error.html", code=500, error=f"Unexpected Error: {e}")
 
     if not ticket:
-        return render_template("index.html", code=404, error="Ticket not found.")
+        return render_template("error.html", code="404", error="Ticket not found.")
     return render_template("view_ticket.html", ticket=ticket)
 
 # new ticket page
@@ -49,9 +49,9 @@ def new_ticket():
         try: 
             dal.create_ticket(name, description, priority=priority)
         except ValueError as e:
-            return render_template("new_ticket.html", code=400, error=f"ValueError: {e}")
+            return render_template("error.html", code=400, error=f"ValueError: {e}")
         except Exception as e:
-            return render_template("new_ticket.html", code=500, error=f"Unexpected Error: {e}")
+            return render_template("error.html", code=500, error=f"Unexpected Error: {e}")
 
         return redirect(url_for("index"))
 
@@ -63,25 +63,31 @@ def close_ticket(ticket_id):
     try: 
         ticket = dal.get_ticket(ticket_id)
     except ValueError as e:
-         return render_template("view_ticket.html", ticket=ticket, code=400, error=f"ValueError: {e}")
+         return render_template("error.html", ticket=ticket, code=400, error=f"ValueError: {e}")
     except Exception as e:
-        return render_template("view_ticket.html", ticket=ticket, code=500, error=f"Unexpected Error: {e}")
+        return render_template("error.html", ticket=ticket, code=500, error=f"Unexpected Error: {e}")
 
     if not ticket:
-        return render_template("index.html", code=404, error="Ticket not found.")
+        return render_template("error.html", code=404, error="Ticket not found.")
 
     if ticket.status == "Closed":
-        return render_template("index.html", code=400, error="Ticket has already been closed.")
+        return render_template("error.html", code=400, error="Ticket has already been closed.")
 
     try:
         dal.set_status(ticket_id, "Closed")
     except ValueError as e:
-        return render_template("index.html", code=400, error=f"ValueError: {e}")
+        return render_template("error.html", code=400, error=f"ValueError: {e}")
     except Exception as e:
-        return render_template("index.html", code=500, error=f"Unexpected Error: {e}")
+        return render_template("error.html", code=500, error=f"Unexpected Error: {e}")
 
     return redirect(url_for("index")) # back to homepage after close --shaun
-    # hi shaun
+
+# simple error page
+# send users to this page instead of index when dealing with existing tickets
+# if users are sent to index with an error the tickets will not load
+@app.route("/error")
+def error():
+    return render_template("error.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
