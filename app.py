@@ -80,7 +80,8 @@ def close_ticket(ticket_id):
     except Exception as e:
         return render_template("error.html", code=500, error=f"Unexpected Error: {e}"), 500
 
-    return redirect(url_for("index")) # back to homepage after close --shaun
+    ticket.status = "Closed"
+    return render_template("view_ticket.html", ticket=ticket, msg="Ticket has been successfully closed"), 200 # sorry shaun, needed more status code support
 
 # simple error page
 # send users to this page instead of index when dealing with existing tickets
