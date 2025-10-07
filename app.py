@@ -32,6 +32,8 @@ def new_ticket():
 
         if not name or not description:
             abort(400, "Name and description are required.")
+        if not priority:
+            abort(400, "Priority is required.")
         if len(name) > 100:
             abort(400, "Length of name must be 100 words or under.")
         if len(description) > 1000:
@@ -45,10 +47,14 @@ def new_ticket():
 # close ticket
 @app.route("/ticket/<int:ticket_id>/close", methods=["POST"])
 def close_ticket(ticket_id):
-    ticket = dal.set_status(ticket_id, "Closed")
+    ticket = dal.get_ticket(ticket_id)
     if not ticket:
         abort(404, "Ticket not found.")
+    if ticket.status == "Closed":
+        abort(400, "Ticket has already been closed.")
+    dal.set_status(ticket_id, "Closed")
     return redirect(url_for("index")) # back to homepage after close --shaun
+    # hi shaun
 
 if __name__ == "__main__":
     app.run(debug=True)
