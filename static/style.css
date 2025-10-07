@@ -39,10 +39,14 @@ td {
 form {
     display: inline;
 }
-.date, .action {
+.status {
     white-space: nowrap;
+    width: 0;
 }
-.description {
+.name {
+    width: 20%;
+}
+.view_description {
     width: 60%;
     overflow-wrap: anywhere;
 }
