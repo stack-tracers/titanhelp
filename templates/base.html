@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>{% block title %}TitanHelp{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -8,6 +9,7 @@
     <header>
         <img src="{{ url_for('static', filename='titanhelp.png') }}" alt="TitanHelp">
     </header>
+    {% include 'includes/_messages.html' %}
 
     <div class="content">
         {% block content %}{% endblock %}
