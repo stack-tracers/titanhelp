@@ -8,6 +8,7 @@
     <header>
         <img src="{{ url_for('static', filename='titanhelp.png') }}" alt="TitanHelp">
     </header>
+    {% include 'includes/_messages.html' %}
 
     <div class="content">
         {% block content %}{% endblock %}
