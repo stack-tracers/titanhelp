@@ -25,5 +25,5 @@ venv/bin/python3 app.py
 
 Test the app:
 ```
-venv/bin/python3 -m unittest -v
+venv/bin/python3 -m unittest -v tests.test_app
 ```

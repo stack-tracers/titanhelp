@@ -44,7 +44,7 @@ def new_ticket():
         if len(name) > 100:
             return render_template("new_ticket.html", code=400, error="Length of name must be 100 words or under."), 400
         if len(description) > 1000:
-            return render_template("new_ticket.html", code=400, error="Length of description must be 100 words or under."), 400
+            return render_template("new_ticket.html", code=400, error="Length of description must be 1000 words or under."), 400
 
         try: 
             dal.create_ticket(name, description, priority=priority)
