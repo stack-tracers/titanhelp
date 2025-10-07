@@ -1,8 +1,7 @@
 import unittest
 from app import app, dal
 import json
-import os
-import sys
+
 with open ("tests/test_data.json") as f:
     d = json.load(f)
     SHORT_TEXT = d["SHORT_TEXT"]
