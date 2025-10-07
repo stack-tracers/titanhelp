@@ -17,9 +17,16 @@ def index():
 @app.route("/ticket/<int:ticket_id>")
 def view_ticket(ticket_id):
     # fetch a single ticket from DAL
-    ticket = dal.get_ticket(ticket_id)
+    try:
+        ticket = dal.get_ticket(ticket_id)
+    except Exception as e:
+        code = 500
+        error = f"Unexpected Error\n{e}"
+        abort(code, error)
     if not ticket:
-        abort(404, "Ticket not found.")
+        code = 404
+        error = "Ticket not found."
+        abort(code, error)
     return render_template("view_ticket.html", ticket=ticket)
 
 # new ticket page
@@ -31,15 +38,34 @@ def new_ticket():
         priority = (request.form.get("priority") or "Low").strip()
 
         if not name or not description:
-            abort(400, "Name and description are required.")
-        if not priority:
-            abort(400, "Priority is required.")
-        if len(name) > 100:
-            abort(400, "Length of name must be 100 words or under.")
-        if len(description) > 1000:
-            abort(400, "Length of description must be 100 words or under.")
+            code = 400
+            error = "Name and description are required."
+            abort(code, error)
 
-        dal.create_ticket(name, description, priority=priority)
+        if not priority:
+            code = 400
+            error = "Priority is required."
+            abort(code, error)
+        if len(name) > 100:
+            code = 400
+            error = "Length of name must be 100 words or under."
+            abort(code, error)
+        if len(description) > 1000:
+            code = 400
+            error = "Length of description must be 100 words or under."
+            abort(code, error)
+
+        try: 
+            dal.create_ticket(name, description, priority=priority)
+        except ValueError as e:
+            code = 400,
+            error = f"ValueError\n{e}"
+            abort(code, error)
+        except Exception as e:
+            code = 500
+            error = f"Unexpected Error\n{e}"
+            abort(code, error)
+
         return redirect(url_for("index"))
 
     return render_template("new_ticket.html")
@@ -47,12 +73,37 @@ def new_ticket():
 # close ticket
 @app.route("/ticket/<int:ticket_id>/close", methods=["POST"])
 def close_ticket(ticket_id):
-    ticket = dal.get_ticket(ticket_id)
+    try: 
+        ticket = dal.get_ticket(ticket_id)
+    except ValueError as e:
+        code = 400
+        error = f"ValueError\n{e}"
+        abort(code, error)
+    except Exception as e:
+        code = 500
+        error= f"Unexpected Error\n{e}"
+        abort(code, error)
+
     if not ticket:
-        abort(404, "Ticket not found.")
+        code = 404
+        error = "Ticket not found."
+        abort(code, error)
     if ticket.status == "Closed":
-        abort(400, "Ticket has already been closed.")
-    dal.set_status(ticket_id, "Closed")
+        code = 400
+        error = "Ticket has already been closed."
+        abort(code, error)
+
+    try:
+        dal.set_status(ticket_id, "Closed")
+    except ValueError as e:
+        code = 400
+        error = f"ValueError\n{e}"
+        abort(code, error)
+    except Exception as e:
+        code = 500
+        error = f"Unexpected Error\n{e}"
+        abort(code, error)
+
     return redirect(url_for("index")) # back to homepage after close --shaun
     # hi shaun
 
