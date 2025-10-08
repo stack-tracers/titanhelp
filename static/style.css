@@ -9,15 +9,27 @@ header img {
     height: 100px;
 }
 
-footer {
-    position: fixed;
-    bottom: 1em;
-    width: 100%;
-    text-align: center;
-    font-size: 0.8em;
-    color: gray;
+html, body {
+    height: 100%;
+    margin: 5;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.8em;
+    padding-top: 10em;
+    padding-bottom: 1em;
+    color: gray;
+}
 
 .button {
     display: inline-block;
@@ -67,6 +79,7 @@ https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
 .alert{
     padding:15px;
     margin-bottom:20px;
+    margin-top:10px;
     border:1px solid transparent;
     border-radius:4px;
     font-weight:700;
