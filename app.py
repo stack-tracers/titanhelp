@@ -3,8 +3,8 @@ from titanhelp_dal.dal import TitanHelpDAL
 
 app = Flask(__name__)
 
-# initialize DAL (creates titanhelp.db if not exists)
-dal = TitanHelpDAL("titanhelp.db")
+# sqlite db in azure persistent storage
+dal = TitanHelpDAL("/home/site/wwwroot/titanhelp.db")
 
 # homepage
 @app.route("/")
