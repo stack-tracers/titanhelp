@@ -1,29 +1,55 @@
 # TitanHelp
-TitanHelp Ticketing System, a help desk ticket management system.
 
-The completed project will be a web application that allows users to:
+## Project Description
+The TitanHelp Ticketing System is a web-based help desk ticket management application that allows users to create, view, and close tickets. Tickets are persisted in a SQL database. The purpose of the project is to demonstrate a layered architecture approach by separating concerns between presentation, application logic, and data access layers. The project also serves as an exercise in project planning, collaboration, and GitHub version control.
 
-- Display tickets in a list or table format
-- Create new tickets via a form
-- Store tickets in a SQL database
+## Features
+- List all tickets
+- Create new tickets
+- View individual tickets
+- Close tickets
+- Persistent ticket storage using SQLite
 
-# Contributing
-Create a Python Virtual Environment:
-```
-python3 -m venv venv
+## Technology Stack
+- **Programming Language:** Python 3.x
+- **Web Framework:** Flask
+- **Templating Engine:** Jinja2
+- **Database:** SQLite
+- **Testing:** Pytest
+
+## Installation/Setup
+Clone the repository:
+```bash
+git clone https://github.com/stack-tracers/titanhelp.git
 ```
 
-Install the prerequisites:
-```
-venv/bin/pip install -r requirements.txt
-```
-
-Run the app:
-```
-venv/bin/python3 app.py
+Navigate to the project folder:
+```bash
+cd titanhelp
 ```
 
-Test the app:
+Create a virtual environment:
+```bash
+python -m venv venv
 ```
-venv/bin/python3 -m unittest -v tests.test_app
+
+Activate the virtual environment:
+```bash
+source venv/bin/activate
+```
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Running the Application
+Start the Flask server:
+```bash
+python app.py
+```
+
+Open the local Flask server in a web browser:
+```
+http://127.0.0.1:5000/
 ```
